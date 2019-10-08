@@ -13,6 +13,13 @@ public class ChoseTextState : AbstractRoomState
     [SerializeField]
     GameObject dontChose;
 
+    public override void Uninit()
+    {
+        dontChose.SetActive(true);
+        chose.SetActive(true);
+        base.Uninit();
+    }
+
     public override void Init()
     {
         base.Init();

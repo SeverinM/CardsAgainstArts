@@ -29,6 +29,7 @@ public class Manager : MonoBehaviour , IOnEventCallback
 
     public void Init()
     {
+        choices.Clear();
         List<Player> players = new List<Player>();
         foreach(Player plyr in PhotonNetwork.CurrentRoom.Players.Values)
         {
@@ -144,6 +145,15 @@ public class Manager : MonoBehaviour , IOnEventCallback
             }       
             else
                 stateHolder.SwitchState(null);
+
+            if (IsDeciding)
+                StartCoroutine(DelayedSwitch());
         }
+    }
+
+    public IEnumerator DelayedSwitch()
+    {
+        yield return new WaitForSeconds(3);
+        Init();
     }
 }

@@ -22,6 +22,13 @@ public class MasterChose : AbstractRoomState
     [SerializeField]
     GameObject dontChose;
 
+    public override void Uninit()
+    {
+        chose.SetActive(true);
+        dontChose.SetActive(true);
+        base.Uninit();
+    }
+
     public override void Init()
     {
         base.Init();

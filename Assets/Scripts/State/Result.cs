@@ -14,6 +14,13 @@ public class Result : AbstractRoomState
     [SerializeField]
     GameObject wrong;
 
+    public override void Uninit()
+    {
+        base.Uninit();
+        wrong.SetActive(true);
+        right.SetActive(true);
+    }
+
     public void SetRightness(bool value)
     {
         if (value)
