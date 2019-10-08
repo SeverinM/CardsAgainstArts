@@ -4,20 +4,22 @@ using UnityEngine;
 using Photon.Realtime;
 using Photon.Pun;
 
-public class RoomDisplay : MonoBehaviour
+public class RoomDisplay : AbstractRoomState
 {
-    [SerializeField]
-    List<RoomUnit> allObjects;
+    List<RoomUnit> allObjects = new List<RoomUnit>();
 
     [SerializeField]
     RoomUnit ru;
+
+    [SerializeField]
+    Transform target;
 
     public void ComputeDisplay()
     {
         Clean();
         foreach(Player player in PhotonNetwork.CurrentRoom.Players.Values)
         {
-            RoomUnit unit = Instantiate(ru,transform);
+            RoomUnit unit = Instantiate(ru,target);
             allObjects.Add(unit);
             unit.SetText(player.NickName);
         }
@@ -30,5 +32,10 @@ public class RoomDisplay : MonoBehaviour
             Destroy(room.gameObject);
         }
         allObjects.Clear();
+    }
+
+    public override void NumberPlayersChanged()
+    {
+        ComputeDisplay();
     }
 }

@@ -10,7 +10,9 @@ public class Test : MonoBehaviourPunCallbacks
     Rect windowRect = new Rect(20, 20, 300, 800);
 
     [SerializeField]
-    RoomDisplay rd;
+    AbstractRoomState firstState;
+
+    AbstractRoomState currentState;
 
     void AddString(string str)
     {
@@ -45,22 +47,31 @@ public class Test : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         AddString("Joined");
-        rd.ComputeDisplay();
+        SwitchState(firstState);
+        if (currentState != null)
+            currentState.NumberPlayersChanged();
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        rd.ComputeDisplay();
+        if (currentState != null)
+            currentState.NumberPlayersChanged();
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        rd.ComputeDisplay();
+        if (currentState != null)
+            currentState.NumberPlayersChanged();
     }
 
-    public override void OnLeftRoom()
+    public void SwitchState(AbstractRoomState roomState)
     {
-        rd.Clean();
+        if (currentState != null)
+            currentState.Uninit();
+
+        currentState = roomState;
+        if (currentState != null)
+            currentState.Init();
     }
 
     void OnGUI()
