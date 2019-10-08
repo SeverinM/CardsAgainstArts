@@ -12,4 +12,9 @@ public class RoomUnit : MonoBehaviour
     {
         txt.text = text;
     }
+
+    public string GetText()
+    {
+        return txt.text;
+    }
 }
