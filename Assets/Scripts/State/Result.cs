@@ -19,6 +19,6 @@ public class Result : AbstractRoomState
         if (value)
             wrong.SetActive(false);
         else
-            right.SetActive(true);
+            right.SetActive(false);
     }
 }
