@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Realtime;
 using Photon.Pun;
 
@@ -13,6 +14,9 @@ public class RoomDisplay : AbstractRoomState
 
     [SerializeField]
     Transform target;
+
+    [SerializeField]
+    Button startButton;
 
     public void ComputeDisplay()
     {
@@ -37,5 +41,6 @@ public class RoomDisplay : AbstractRoomState
     public override void NumberPlayersChanged()
     {
         ComputeDisplay();
+        startButton.interactable = (PhotonNetwork.CurrentRoom.PlayerCount > 1);
     }
 }

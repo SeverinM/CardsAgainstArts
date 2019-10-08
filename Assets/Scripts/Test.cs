@@ -14,7 +14,7 @@ public class Test : MonoBehaviourPunCallbacks
 
     AbstractRoomState currentState;
 
-    void AddString(string str)
+    public void AddString(string str)
     {
         allLogs.Add(str);
     }
@@ -52,13 +52,13 @@ public class Test : MonoBehaviourPunCallbacks
             currentState.NumberPlayersChanged();
     }
 
-    public override void OnPlayerLeftRoom(Player otherPlayer)
+    public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         if (currentState != null)
             currentState.NumberPlayersChanged();
     }
 
-    public override void OnPlayerEnteredRoom(Player newPlayer)
+    public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         if (currentState != null)
             currentState.NumberPlayersChanged();
@@ -71,7 +71,17 @@ public class Test : MonoBehaviourPunCallbacks
 
         currentState = roomState;
         if (currentState != null)
+        {
             currentState.Init();
+        }
+    }
+
+    public void NextState()
+    {
+        if (currentState != null)
+        {
+            SwitchState(currentState.GetState());
+        }
     }
 
     void OnGUI()

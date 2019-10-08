@@ -9,6 +9,14 @@ public class AbstractRoomState : MonoBehaviourPunCallbacks
     [SerializeField]
     protected List<GameObject> allGobs;
 
+    [SerializeField]
+    protected AbstractRoomState nextState;
+
+    public AbstractRoomState GetState()
+    {
+        return nextState;
+    }
+
     public virtual void Init()
     {
         foreach(GameObject gob in allGobs)
