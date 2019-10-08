@@ -41,6 +41,6 @@ public class RoomDisplay : AbstractRoomState
     public override void NumberPlayersChanged()
     {
         ComputeDisplay();
-        startButton.interactable = (PhotonNetwork.CurrentRoom.PlayerCount > 1);
+        //startButton.interactable = (PhotonNetwork.CurrentRoom.PlayerCount > 1);
     }
 }

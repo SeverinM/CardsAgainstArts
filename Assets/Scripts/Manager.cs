@@ -26,7 +26,7 @@ public class Manager : MonoBehaviour , IOnEventCallback
         Player chosen = players[Random.Range(0, players.Count)];
 
         byte evCode = ConstEvents.STARTROUND;
-        object content = chosen.UserId;
+        object content = new object[] { PhotonNetwork.LocalPlayer.UserId };
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         SendOptions sendOptions = new SendOptions { Reliability = true };
         PhotonNetwork.RaiseEvent(evCode, content, raiseEventOptions, sendOptions);
@@ -68,8 +68,10 @@ public class Manager : MonoBehaviour , IOnEventCallback
 
         if (eventCode == 1)
         {
-            string data = (string)photonEvent.CustomData;
-            IsDeciding = PhotonNetwork.LocalPlayer.UserId == data;
+            object[] data = (object[])photonEvent.CustomData;
+            string str = (string)data[0];
+            stateHolder.AddString(str);
+            IsDeciding = PhotonNetwork.LocalPlayer.UserId == str;
             stateHolder.SwitchState(announce);
         }
     }
