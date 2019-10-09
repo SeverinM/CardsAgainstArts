@@ -22,13 +22,6 @@ public class Test : MonoBehaviourPunCallbacks
         allLogs.Add(str);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        PhotonNetwork.NickName = "Bata";
-        PhotonNetwork.ConnectUsingSettings();
-    }
-
     public override void OnConnectedToMaster()
     {
         AddString("Connected to server");

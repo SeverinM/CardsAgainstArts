@@ -21,11 +21,15 @@ public class Manager : MonoBehaviour , IOnEventCallback
     [SerializeField]
     AbstractRoomState result;
 
+    [SerializeField]
+    AbstractRoomState start;
+
     public bool wasRight = false;
     public Dictionary<string, string> choices = new Dictionary<string, string>();
     public bool disableEvents = false;
     [HideInInspector]
     public string chosenStr;
+    bool isFirst = true;
 
     public void Init()
     {
@@ -66,6 +70,7 @@ public class Manager : MonoBehaviour , IOnEventCallback
             _instance = this;
 
         stateHolder = GameObject.FindObjectOfType<Test>();
+        stateHolder.SwitchState(start);
     }
 
     public static Manager GetInstance()
@@ -111,7 +116,11 @@ public class Manager : MonoBehaviour , IOnEventCallback
             object[] data = (object[])photonEvent.CustomData;
             string str = (string)data[0];
             stateHolder.AddString(str);
-            IsDeciding = PhotonNetwork.LocalPlayer.UserId == str;
+            if (isFirst)
+            {
+                isFirst = false;
+                IsDeciding = PhotonNetwork.LocalPlayer.UserId == str;
+            }
             stateHolder.SwitchState(announce);
         }
 
@@ -153,9 +162,12 @@ public class Manager : MonoBehaviour , IOnEventCallback
             {
                 stateHolder.SwitchState(result);
                 ((Result)result).SetRightness(str == PhotonNetwork.LocalPlayer.UserId);
+                if (str == PhotonNetwork.LocalPlayer.UserId)
+                    IsDeciding = true;
             }       
             else
             {
+                IsDeciding = false;
                 stateHolder.SwitchState(null);
                 StartCoroutine(DelayedSwitch());
             }                
@@ -165,6 +177,5 @@ public class Manager : MonoBehaviour , IOnEventCallback
     public IEnumerator DelayedSwitch()
     {
         yield return new WaitForSeconds(3);
-        Init();
     }
 }

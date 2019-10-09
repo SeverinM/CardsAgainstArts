@@ -24,6 +24,11 @@ public class Result : AbstractRoomState
         right.SetActive(true);
     }
 
+    public override void Init()
+    {
+        base.Init();
+    }
+
     public override void NumberPlayersChanged()
     {
         Manager.GetInstance().stateHolder.SwitchState(disconnect);
@@ -32,7 +37,9 @@ public class Result : AbstractRoomState
     public void SetRightness(bool value)
     {
         if (value)
+        {
             wrong.SetActive(false);
+        }      
         else
             right.SetActive(false);
     }
