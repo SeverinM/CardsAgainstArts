@@ -22,6 +22,9 @@ public class ChoseTextState : AbstractRoomState
     [SerializeField]
     ImageDataBank imgs;
 
+    [SerializeField]
+    AspectRatioFitter fitter;
+
     public override void Uninit()
     {
         dontChose.SetActive(true);
@@ -37,11 +40,14 @@ public class ChoseTextState : AbstractRoomState
     public override void Init()
     {
         base.Init();
+        Manager.GetInstance().choices.Clear();
         if (Manager.GetInstance().IsDeciding)
             dontChose.SetActive(false);
         else
             chose.SetActive(false);
 
-        img.sprite = imgs.Sample((int)PhotonNetwork.CurrentRoom.CustomProperties["imageId"]);
+        float ratio = 0;
+        img.sprite = imgs.Sample((int)PhotonNetwork.CurrentRoom.CustomProperties["imageId"], ref ratio);
+        fitter.aspectRatio = ratio;
     }
 }

@@ -39,7 +39,6 @@ public class Manager : MonoBehaviour , IOnEventCallback
             players.Add(plyr);
         }
         Player chosen = players[Random.Range(0, players.Count)];
-
         byte evCode = ConstEvents.STARTROUND;
         object content = new object[] { PhotonNetwork.LocalPlayer.UserId };
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
@@ -96,9 +95,8 @@ public class Manager : MonoBehaviour , IOnEventCallback
     public void Chose(string text)
     {
         chosenStr = text;
-        string id = choices[text];
         byte evCode = ConstEvents.CHOSEN;
-        object content = new object[] { id };
+        object content = new object[] { text };
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         SendOptions sendOptions = new SendOptions { Reliability = true };
         PhotonNetwork.RaiseEvent(evCode, content, raiseEventOptions, sendOptions);
@@ -129,14 +127,10 @@ public class Manager : MonoBehaviour , IOnEventCallback
             object[] data = (object[])photonEvent.CustomData;
             string str = (string)data[0];
             string id = (string)data[1];
-            stateHolder.AddString(str);
-            if (IsDeciding)
-                choices[str] = id;
-
-            stateHolder.AddString(choices.Count == PhotonNetwork.CurrentRoom.Players.Count - 1 ? "True" : "False");
+            choices[str] = id;
 
             //Everyone has chosen
-            if (choices.Count == PhotonNetwork.CurrentRoom.Players.Count - 1)
+            if (choices.Count == PhotonNetwork.CurrentRoom.Players.Count - 1 && IsDeciding)
             {
                 byte evCode = ConstEvents.TIMEUP;
                 object content = new object[] {};
@@ -154,28 +148,26 @@ public class Manager : MonoBehaviour , IOnEventCallback
         //Verdict
         if (eventCode == ConstEvents.CHOSEN)
         {
-            choices.Clear();
-            stateHolder.AddString("cleared"); 
             object[] data = (object[])photonEvent.CustomData;
             string str = (string)data[0];
             if (!IsDeciding)
             {
-                stateHolder.SwitchState(result);
-                ((Result)result).SetRightness(str == PhotonNetwork.LocalPlayer.UserId);
-                if (str == PhotonNetwork.LocalPlayer.UserId)
+                if (choices[str] == PhotonNetwork.LocalPlayer.UserId)
                     IsDeciding = true;
             }       
             else
             {
                 IsDeciding = false;
-                stateHolder.SwitchState(null);
-                StartCoroutine(DelayedSwitch());
-            }                
+            }
+            StartCoroutine(DelayedSwitch());
+            stateHolder.SwitchState(result);
+            ((Result)result).SetChosenPhrases(str);
         }
     }
 
     public IEnumerator DelayedSwitch()
     {
         yield return new WaitForSeconds(3);
+        stateHolder.SwitchState(announce);
     }
 }

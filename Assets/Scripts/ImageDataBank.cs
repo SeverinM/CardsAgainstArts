@@ -7,8 +7,10 @@ public class ImageDataBank : MonoBehaviour
     [SerializeField]
     List<Sprite> allSprites;
 
-    public Sprite Sample(int value)
+    public Sprite Sample(int value, ref float ratio)
     {
-        return allSprites[value % allSprites.Count];
+        Sprite sprt = allSprites[value % allSprites.Count];
+        ratio = sprt.bounds.size.x / sprt.bounds.size.y;
+        return sprt;
     }
 }

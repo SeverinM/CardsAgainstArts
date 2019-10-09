@@ -31,6 +31,9 @@ public class MasterChose : AbstractRoomState
     [SerializeField]
     Image img;
 
+    [SerializeField]
+    AspectRatioFitter fitter;
+
     public override void Uninit()
     {
         foreach(RoomUnit roomu in allObjs)
@@ -55,7 +58,9 @@ public class MasterChose : AbstractRoomState
         if (Manager.GetInstance().IsDeciding)
         {
             dontChose.SetActive(false);
-            img.sprite = databank.Sample((int)PhotonNetwork.CurrentRoom.CustomProperties["imageId"]);
+            float ratio = 0;
+            img.sprite = databank.Sample((int)PhotonNetwork.CurrentRoom.CustomProperties["imageId"], ref ratio);
+            fitter.aspectRatio = ratio;
             foreach (string txt in Manager.GetInstance().choices.Keys)
             {
                 RoomUnit ru = Instantiate(prefab, target);
