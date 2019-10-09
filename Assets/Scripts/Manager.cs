@@ -166,7 +166,7 @@ public class Manager : MonoBehaviour , IOnEventCallback
 
     public IEnumerator DelayedSwitch()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(10);
         stateHolder.SwitchState(announce);
     }
 }

@@ -79,7 +79,11 @@ public class Result : AbstractRoomState
             txt.color = Color.red;
         }
 
-        Manager.GetInstance().IsDeciding = Manager.GetInstance().wasRight;
+        Manager.GetInstance().IsDeciding = false;
+        if (Manager.GetInstance().wasRight)
+        {
+            Manager.GetInstance().IsDeciding = true;
+        }
     }
 
     public void SetChosenPhrases(string str)
