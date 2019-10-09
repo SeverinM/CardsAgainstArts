@@ -62,6 +62,14 @@ public class Test : MonoBehaviourPunCallbacks
         }      
     }
 
+    public override void OnLeftRoom()
+    {
+        if (currentState != null)
+        {
+            currentState.NumberPlayersChanged();
+        }
+    }
+
     public void SwitchState(AbstractRoomState roomState)
     {
         if (currentState != null)
