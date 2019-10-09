@@ -25,6 +25,12 @@ public class MasterChose : AbstractRoomState
     [SerializeField]
     AbstractRoomState disconnect;
 
+    [SerializeField]
+    ImageDataBank databank;
+
+    [SerializeField]
+    Image img;
+
     public override void Uninit()
     {
         foreach(RoomUnit roomu in allObjs)
@@ -49,6 +55,7 @@ public class MasterChose : AbstractRoomState
         if (Manager.GetInstance().IsDeciding)
         {
             dontChose.SetActive(false);
+            img.sprite = databank.Sample((int)PhotonNetwork.CurrentRoom.CustomProperties["imageId"]);
             foreach (string txt in Manager.GetInstance().choices.Keys)
             {
                 RoomUnit ru = Instantiate(prefab, target);
@@ -60,6 +67,6 @@ public class MasterChose : AbstractRoomState
         else
         {
             chose.SetActive(false);
-        }
+        }       
     }
 }

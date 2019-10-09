@@ -27,6 +27,12 @@ public class AnnounceState : AbstractRoomState
         base.Init();
         txt.text = Manager.GetInstance().IsDeciding ? youDecide : youDontDecide;
         StartCoroutine(DelayedTransition());
+        if(Manager.GetInstance().IsDeciding)
+        {
+            ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+            hash.Add("imageId" , Random.Range(0,100));
+            PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
+        }
     }
 
     public override void NumberPlayersChanged()

@@ -16,6 +16,12 @@ public class ChoseTextState : AbstractRoomState
     [SerializeField]
     AbstractRoomState disconnect;
 
+    [SerializeField]
+    Image img;
+
+    [SerializeField]
+    ImageDataBank imgs;
+
     public override void Uninit()
     {
         dontChose.SetActive(true);
@@ -35,5 +41,7 @@ public class ChoseTextState : AbstractRoomState
             dontChose.SetActive(false);
         else
             chose.SetActive(false);
+
+        img.sprite = imgs.Sample((int)PhotonNetwork.CurrentRoom.CustomProperties["imageId"]);
     }
 }
