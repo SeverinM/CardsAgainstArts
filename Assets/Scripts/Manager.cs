@@ -24,6 +24,7 @@ public class Manager : MonoBehaviour , IOnEventCallback
     [SerializeField]
     AbstractRoomState start;
 
+    [HideInInspector]
     public bool wasRight = false;
     public Dictionary<string, string> choices = new Dictionary<string, string>();
     public bool disableEvents = false;
@@ -96,7 +97,7 @@ public class Manager : MonoBehaviour , IOnEventCallback
     {
         chosenStr = text;
         byte evCode = ConstEvents.CHOSEN;
-        object content = new object[] { text };
+        object content = new object[] { text , choices[text]};
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         SendOptions sendOptions = new SendOptions { Reliability = true };
         PhotonNetwork.RaiseEvent(evCode, content, raiseEventOptions, sendOptions);
@@ -153,12 +154,10 @@ public class Manager : MonoBehaviour , IOnEventCallback
             if (!IsDeciding)
             {
                 if (choices[str] == PhotonNetwork.LocalPlayer.UserId)
-                    IsDeciding = true;
+                {
+                    wasRight = true;
+                }
             }       
-            else
-            {
-                IsDeciding = false;
-            }
             StartCoroutine(DelayedSwitch());
             stateHolder.SwitchState(result);
             ((Result)result).SetChosenPhrases(str);

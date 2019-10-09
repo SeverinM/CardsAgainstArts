@@ -29,6 +29,15 @@ public class Result : AbstractRoomState
     [SerializeField]
     AspectRatioFitter fitter;
 
+    [SerializeField]
+    Text txt;
+
+    [SerializeField]
+    string won;
+
+    [SerializeField]
+    string lost;
+
     public override void Uninit()
     {
         base.Uninit();
@@ -52,6 +61,25 @@ public class Result : AbstractRoomState
             roomu.SetText(str);
             units.Add(roomu);
         }
+
+        if (Manager.GetInstance().IsDeciding)
+        {
+            txt.text = "";
+            return;
+        }
+
+        if (Manager.GetInstance().wasRight)
+        {
+            txt.text = won;
+            txt.color = Color.green;
+        }
+        else
+        {
+            txt.text = lost;
+            txt.color = Color.red;
+        }
+
+        Manager.GetInstance().IsDeciding = Manager.GetInstance().wasRight;
     }
 
     public void SetChosenPhrases(string str)

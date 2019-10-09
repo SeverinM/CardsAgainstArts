@@ -25,6 +25,7 @@ public class AnnounceState : AbstractRoomState
     public override void Init()
     {
         base.Init();
+        Manager.GetInstance().wasRight = false;
         txt.text = Manager.GetInstance().IsDeciding ? youDecide : youDontDecide;
         StartCoroutine(DelayedTransition());
         if(Manager.GetInstance().IsDeciding)
