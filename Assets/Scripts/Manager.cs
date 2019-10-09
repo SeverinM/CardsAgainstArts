@@ -156,6 +156,7 @@ public class Manager : MonoBehaviour , IOnEventCallback
                 if (choices[str] == PhotonNetwork.LocalPlayer.UserId)
                 {
                     wasRight = true;
+                    stateHolder.AddString("Was right");
                 }
             }       
             StartCoroutine(DelayedSwitch());
@@ -167,6 +168,7 @@ public class Manager : MonoBehaviour , IOnEventCallback
     public IEnumerator DelayedSwitch()
     {
         yield return new WaitForSeconds(10);
+        IsDeciding = wasRight;
         stateHolder.SwitchState(announce);
     }
 }
