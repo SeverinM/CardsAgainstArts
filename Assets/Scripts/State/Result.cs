@@ -14,11 +14,19 @@ public class Result : AbstractRoomState
     [SerializeField]
     GameObject wrong;
 
+    [SerializeField]
+    AbstractRoomState disconnect;
+
     public override void Uninit()
     {
         base.Uninit();
         wrong.SetActive(true);
         right.SetActive(true);
+    }
+
+    public override void NumberPlayersChanged()
+    {
+        Manager.GetInstance().stateHolder.SwitchState(disconnect);
     }
 
     public void SetRightness(bool value)

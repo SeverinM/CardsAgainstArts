@@ -22,11 +22,24 @@ public class MasterChose : AbstractRoomState
     [SerializeField]
     GameObject dontChose;
 
+    [SerializeField]
+    AbstractRoomState disconnect;
+
     public override void Uninit()
     {
+        foreach(RoomUnit roomu in allObjs)
+        {
+            Destroy(roomu.gameObject);
+        }
+        allObjs.Clear();
         chose.SetActive(true);
         dontChose.SetActive(true);
         base.Uninit();
+    }
+
+    public override void NumberPlayersChanged()
+    {
+        Manager.GetInstance().stateHolder.SwitchState(disconnect);
     }
 
     public override void Init()
@@ -41,6 +54,7 @@ public class MasterChose : AbstractRoomState
                 RoomUnit ru = Instantiate(prefab, target);
                 ru.SetText(txt);
                 ru.GetComponent<Button>().onClick.AddListener(() => Manager.GetInstance().Chose(ru.GetText()));
+                allObjs.Add(ru);
             }
         }
         else

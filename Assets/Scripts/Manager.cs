@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Photon.Realtime;
 using Photon.Pun;
 using ExitGames.Client.Photon;
+using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour , IOnEventCallback
 {
@@ -21,15 +22,13 @@ public class Manager : MonoBehaviour , IOnEventCallback
     AbstractRoomState result;
 
     public bool wasRight = false;
-
     public Dictionary<string, string> choices = new Dictionary<string, string>();
-
+    public bool disableEvents = false;
     [HideInInspector]
     public string chosenStr;
 
     public void Init()
     {
-        choices.Clear();
         List<Player> players = new List<Player>();
         foreach(Player plyr in PhotonNetwork.CurrentRoom.Players.Values)
         {
@@ -52,6 +51,11 @@ public class Manager : MonoBehaviour , IOnEventCallback
     public void OnDisable()
     {
         PhotonNetwork.RemoveCallbackTarget(this);
+    }
+
+    public void Reload()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void Start()
@@ -81,6 +85,7 @@ public class Manager : MonoBehaviour , IOnEventCallback
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         SendOptions sendOptions = new SendOptions { Reliability = true };
         PhotonNetwork.RaiseEvent(evCode, content, raiseEventOptions, sendOptions);
+        iF.text = "";
     }
 
     public void Chose(string text)
@@ -96,6 +101,9 @@ public class Manager : MonoBehaviour , IOnEventCallback
 
     public void OnEvent(EventData photonEvent)
     {
+        if (disableEvents)
+            return;
+
         byte eventCode = photonEvent.Code;
 
         if (eventCode == ConstEvents.STARTROUND)
@@ -112,6 +120,7 @@ public class Manager : MonoBehaviour , IOnEventCallback
             object[] data = (object[])photonEvent.CustomData;
             string str = (string)data[0];
             string id = (string)data[1];
+            stateHolder.AddString(str);
             if (IsDeciding)
                 choices[str] = id;
 
@@ -136,6 +145,8 @@ public class Manager : MonoBehaviour , IOnEventCallback
         //Verdict
         if (eventCode == ConstEvents.CHOSEN)
         {
+            choices.Clear();
+            stateHolder.AddString("cleared"); 
             object[] data = (object[])photonEvent.CustomData;
             string str = (string)data[0];
             if (!IsDeciding)
@@ -144,10 +155,10 @@ public class Manager : MonoBehaviour , IOnEventCallback
                 ((Result)result).SetRightness(str == PhotonNetwork.LocalPlayer.UserId);
             }       
             else
+            {
                 stateHolder.SwitchState(null);
-
-            if (IsDeciding)
                 StartCoroutine(DelayedSwitch());
+            }                
         }
     }
 

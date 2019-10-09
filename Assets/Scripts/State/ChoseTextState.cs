@@ -13,11 +13,19 @@ public class ChoseTextState : AbstractRoomState
     [SerializeField]
     GameObject dontChose;
 
+    [SerializeField]
+    AbstractRoomState disconnect;
+
     public override void Uninit()
     {
         dontChose.SetActive(true);
         chose.SetActive(true);
         base.Uninit();
+    }
+
+    public override void NumberPlayersChanged()
+    {
+        Manager.GetInstance().stateHolder.SwitchState(disconnect);
     }
 
     public override void Init()

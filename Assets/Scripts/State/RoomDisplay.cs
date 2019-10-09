@@ -29,6 +29,15 @@ public class RoomDisplay : AbstractRoomState
         }
     }
 
+    public override void Uninit()
+    {
+        base.Uninit();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+        }
+    }
+
     public void Clean()
     {
         foreach (RoomUnit room in allObjects)

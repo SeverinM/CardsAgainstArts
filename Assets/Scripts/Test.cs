@@ -14,6 +14,9 @@ public class Test : MonoBehaviourPunCallbacks
 
     AbstractRoomState currentState;
 
+    [SerializeField]
+    AbstractRoomState disconnected;
+
     public void AddString(string str)
     {
         allLogs.Add(str);
@@ -61,7 +64,9 @@ public class Test : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         if (currentState != null)
+        {
             currentState.NumberPlayersChanged();
+        }      
     }
 
     public void SwitchState(AbstractRoomState roomState)

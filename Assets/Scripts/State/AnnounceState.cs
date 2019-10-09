@@ -19,11 +19,19 @@ public class AnnounceState : AbstractRoomState
     [SerializeField]
     protected string youDontDecide;
 
+    [SerializeField]
+    AbstractRoomState disconnect;
+
     public override void Init()
     {
         base.Init();
         txt.text = Manager.GetInstance().IsDeciding ? youDecide : youDontDecide;
         StartCoroutine(DelayedTransition());
+    }
+
+    public override void NumberPlayersChanged()
+    {
+        Manager.GetInstance().stateHolder.SwitchState(disconnect);
     }
 
     IEnumerator DelayedTransition()
