@@ -25,6 +25,9 @@ public class WinResult : AbstractRoomState
     [SerializeField]
     AbstractRoomState disconnect;
 
+    [SerializeField]
+    AbstractRoomState finalResult;
+
     Sequence seq;
 
     public override void Init()
@@ -65,8 +68,14 @@ public class WinResult : AbstractRoomState
             txtCountdown.text = "Next round in " + second;
             yield return new WaitForSeconds(1);
         }
-        
-        Manager.GetInstance().StartAgain();
+
+        if (Manager.GetInstance().roundLeft > 0)
+            Manager.GetInstance().StartAgain();
+        else
+        {
+            Manager.GetInstance().stateHolder.AddString("======");
+            Manager.GetInstance().stateHolder.SwitchState(finalResult);
+        }
     }
 
     public override void NumberPlayersChanged()

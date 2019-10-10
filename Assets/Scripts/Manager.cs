@@ -39,6 +39,8 @@ public class Manager : MonoBehaviour , IOnEventCallback
     public string chosenStr;
     bool isFirst = true;
 
+    public int roundLeft = 1;
+
     int point = 0;
     public int Point
     {
@@ -147,6 +149,7 @@ public class Manager : MonoBehaviour , IOnEventCallback
                 IsDeciding = PhotonNetwork.LocalPlayer.UserId == str;
             }
 
+            //Chose a random image
             if (IsDeciding)
             {
                 ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
@@ -156,6 +159,7 @@ public class Manager : MonoBehaviour , IOnEventCallback
             }
 
             stateHolder.SwitchState(announce);
+            roundLeft--;
         }
 
         if (eventCode == ConstEvents.SENT)

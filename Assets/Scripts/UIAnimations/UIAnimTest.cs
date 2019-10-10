@@ -35,13 +35,6 @@ public class UIAnimTest : MonoBehaviour
 		text.DOColor(new Color(startingColor.r, startingColor.g, startingColor.b, 0.5f),1f);
 	}
 
-    public Sequence AnimSize(Transform trsf)
-    {
-        Sequence sizeChange = DOTween.Sequence();
-        sizeChange.Append(trsf.DOScale(new Vector3(1.5f, 1, 1), 0.5f));
-        return sizeChange;
-    }
-
 	/*public void ArriveFromLeftAnim(Transform transform) {
 		Sequence arrivingLeft = DOTween.Sequence();
 		arrivingLeft.Append(transform.DOMoveX(190, 1f));
