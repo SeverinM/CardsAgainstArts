@@ -3294,7 +3294,7 @@ MonoBehaviour:
   wasRight: 0
   disableEvents: 0
   chosenStr: 
-  roundLeft: 1
+  roundLeft: 10
 --- !u!4 &1774589597
 Transform:
   m_ObjectHideFlags: 0
