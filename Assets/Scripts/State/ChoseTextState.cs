@@ -25,11 +25,25 @@ public class ChoseTextState : AbstractRoomState
     [SerializeField]
     AspectRatioFitter fitter;
 
+    [SerializeField]
+    Button btn;
+
+    [SerializeField]
+    Text txt;
+
     public override void Uninit()
     {
         dontChose.SetActive(true);
         chose.SetActive(true);
+        btn.interactable = true;
+        txt.text = "";
         base.Uninit();
+    }
+
+    public void Sent()
+    {
+        btn.interactable = false;
+        txt.text = "Sent ! waiting for others players";
     }
 
     public override void NumberPlayersChanged()

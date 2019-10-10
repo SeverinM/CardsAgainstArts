@@ -24,6 +24,9 @@ public class Manager : MonoBehaviour , IOnEventCallback
     [SerializeField]
     AbstractRoomState start;
 
+    [SerializeField]
+    Text txtScore;
+
     [HideInInspector]
     public bool wasRight = false;
     public Dictionary<string, string> choices = new Dictionary<string, string>();
@@ -31,6 +34,20 @@ public class Manager : MonoBehaviour , IOnEventCallback
     [HideInInspector]
     public string chosenStr;
     bool isFirst = true;
+
+    int point = 0;
+    public int Point
+    {
+        get
+        {
+            return point;
+        }
+        set
+        {
+            point = value;
+            txtScore.text = "Score : " + point;
+        }
+    }
 
     public void Init()
     {
@@ -112,6 +129,7 @@ public class Manager : MonoBehaviour , IOnEventCallback
 
         if (eventCode == ConstEvents.STARTROUND)
         {
+            txtScore.gameObject.SetActive(true);
             object[] data = (object[])photonEvent.CustomData;
             string str = (string)data[0];
             stateHolder.AddString(str);
@@ -156,7 +174,7 @@ public class Manager : MonoBehaviour , IOnEventCallback
                 if (choices[str] == PhotonNetwork.LocalPlayer.UserId)
                 {
                     wasRight = true;
-                    stateHolder.AddString("Was right");
+                    Point++;
                 }
             }       
             StartCoroutine(DelayedSwitch());
