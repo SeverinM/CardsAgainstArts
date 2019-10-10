@@ -12,26 +12,22 @@ public class UIAnimTest : MonoBehaviour
 		DOTween.Init();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-	public void RescaleUpDownAnim(Transform transform) { 
+	public Sequence RescaleUpDownAnim(Transform transform) { 
 		Sequence scalingUpDown = DOTween.Sequence();
 		scalingUpDown.Append(transform.DOScale(new Vector3(1.2f, 1.2f, 1), 0.2f));
 		scalingUpDown.Append(transform.DOScale(new Vector3(0.9f, 0.9f, 0.9f), 0.1f));
 		scalingUpDown.Append(transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.15f));
 		scalingUpDown.Append(transform.DOScale(new Vector3(1f, 1f, 1f), 0.2f));
+        return scalingUpDown;
 	}
 
-	public void ColorChangeForWinnerAnim(Text text, Color firstColor, Color secondColor) {
+	public Sequence ColorChangeForWinnerAnim(Text text, Color firstColor, Color secondColor) {
 		text.color = secondColor;
 		Sequence colorChange = DOTween.Sequence();
 		colorChange.Append(text.DOColor(firstColor, 1.5f));
 		colorChange.Append(text.DOColor(secondColor, 1.5f));
 		colorChange.SetLoops(-1, LoopType.Yoyo);
+        return colorChange;
 	}
 
 	public void ColorChangeForLoserAnim(Text text) {

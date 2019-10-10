@@ -6,6 +6,7 @@ using Photon.Realtime;
 using Photon.Pun;
 using ExitGames.Client.Photon;
 using System.Linq;
+using DG.Tweening;
 
 public class Result : AbstractRoomState
 {
@@ -38,6 +39,8 @@ public class Result : AbstractRoomState
     [SerializeField]
     string lost;
 
+    Sequence seq;
+
     public override void Uninit()
     {
         base.Uninit();
@@ -46,6 +49,11 @@ public class Result : AbstractRoomState
             Destroy(ru.gameObject);
         }
         units.Clear();
+        if(seq != null)
+        {
+            seq.Kill();
+            seq = null;
+        }
     }
 
     public override void Init()
@@ -72,11 +80,13 @@ public class Result : AbstractRoomState
         {
             txt.text = won;
             txt.color = Color.green;
+            seq = Manager.GetInstance().Anim.ColorChangeForWinnerAnim(txt, Color.green, Color.blue);
         }
         else
         {
             txt.text = lost;
             txt.color = Color.red;
+            Manager.GetInstance().Anim.ColorChangeForLoserAnim(txt);
         }
     }
 

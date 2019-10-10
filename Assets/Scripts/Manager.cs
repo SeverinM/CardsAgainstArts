@@ -16,6 +16,10 @@ public class Manager : MonoBehaviour , IOnEventCallback
     public bool IsDeciding { get; set; }
 
     [SerializeField]
+    UIAnimTest anim;
+    public UIAnimTest Anim => anim;
+
+    [SerializeField]
     AbstractRoomState announce;
 
     [SerializeField]
