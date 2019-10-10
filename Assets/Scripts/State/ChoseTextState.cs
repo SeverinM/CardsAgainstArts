@@ -60,8 +60,10 @@ public class ChoseTextState : AbstractRoomState
         else
             chose.SetActive(false);
 
-        float ratio = 0;
-        img.sprite = imgs.Sample((int)PhotonNetwork.CurrentRoom.CustomProperties["imageId"], ref ratio);
+        Manager.GetInstance().stateHolder.AddString(PhotonNetwork.CurrentRoom.CustomProperties["imageId"].ToString());
+        imgs.Sample((int)PhotonNetwork.CurrentRoom.CustomProperties["imageId"]);
+        float ratio = imgs.ratio;
+        img.sprite = imgs.sprt;
         fitter.aspectRatio = ratio;
     }
 }

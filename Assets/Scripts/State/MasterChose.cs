@@ -59,8 +59,8 @@ public class MasterChose : AbstractRoomState
         {
             dontChose.SetActive(false);
             float ratio = 0;
-            img.sprite = databank.Sample((int)PhotonNetwork.CurrentRoom.CustomProperties["imageId"], ref ratio);
-            fitter.aspectRatio = ratio;
+            img.sprite = databank.sprt;
+            fitter.aspectRatio = databank.ratio;
             foreach (string txt in Manager.GetInstance().choices.Keys)
             {
                 RoomUnit ru = Instantiate(prefab, target);

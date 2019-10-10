@@ -50,6 +50,9 @@ public class Manager : MonoBehaviour , IOnEventCallback
         {
             point = value;
             txtScore.text = "Score : " + point;
+            ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+            hash["Score"] = point;
+            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
         }
     }
 
@@ -90,6 +93,7 @@ public class Manager : MonoBehaviour , IOnEventCallback
         else
             _instance = this;
 
+        Point = 0;
         stateHolder = GameObject.FindObjectOfType<Test>();
         stateHolder.SwitchState(start);
     }
@@ -142,6 +146,15 @@ public class Manager : MonoBehaviour , IOnEventCallback
                 isFirst = false;
                 IsDeciding = PhotonNetwork.LocalPlayer.UserId == str;
             }
+
+            if (IsDeciding)
+            {
+                ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+                hash.Add("imageId", Random.Range(0, 100));
+                PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
+                stateHolder.AddString("chosen");
+            }
+
             stateHolder.SwitchState(announce);
         }
 
@@ -178,7 +191,6 @@ public class Manager : MonoBehaviour , IOnEventCallback
                 if (choices[str] == PhotonNetwork.LocalPlayer.UserId)
                 {
                     wasRight = true;
-                    Point++;
                 }
             }       
             StartCoroutine(DelayedSwitch());
@@ -190,7 +202,12 @@ public class Manager : MonoBehaviour , IOnEventCallback
     public IEnumerator DelayedSwitch()
     {
         yield return new WaitForSeconds(10);
+        stateHolder.NextState();
         IsDeciding = wasRight;
+    }
+
+    public void StartAgain()
+    {
         stateHolder.SwitchState(announce);
     }
 }

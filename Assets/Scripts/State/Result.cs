@@ -30,15 +30,6 @@ public class Result : AbstractRoomState
     [SerializeField]
     AspectRatioFitter fitter;
 
-    [SerializeField]
-    Text txt;
-
-    [SerializeField]
-    string won;
-
-    [SerializeField]
-    string lost;
-
     Sequence seq;
 
     public override void Uninit()
@@ -60,8 +51,8 @@ public class Result : AbstractRoomState
     {
         base.Init();
         float ratio = 0;
-        img.sprite = databank.Sample((int)PhotonNetwork.CurrentRoom.CustomProperties["imageId"], ref ratio);
-        fitter.aspectRatio = ratio;
+        img.sprite = databank.sprt;
+        fitter.aspectRatio = databank.ratio;
 
         foreach (string str in Manager.GetInstance().choices.Keys)
         {
@@ -69,32 +60,12 @@ public class Result : AbstractRoomState
             roomu.SetText(str);
             units.Add(roomu);
         }
-
-        if (Manager.GetInstance().IsDeciding)
-        {
-            txt.text = "";
-            return;
-        }
-
-        if (Manager.GetInstance().wasRight)
-        {
-            txt.text = won;
-            txt.color = Color.green;
-            seq = Manager.GetInstance().Anim.ColorChangeForWinnerAnim(txt, Color.green, Color.blue);
-        }
-        else
-        {
-            txt.text = lost;
-            txt.color = Color.red;
-            Manager.GetInstance().Anim.ColorChangeForLoserAnim(txt);
-        }
     }
 
     public void SetChosenPhrases(string str)
     {
         foreach(RoomUnit room in units)
         {
-            Manager.GetInstance().stateHolder.AddString("=====" + room.GetText());
             if (room.GetText() == str)
                 room.GetComponent<Text>().color = Color.magenta;
         }
