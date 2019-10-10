@@ -89,19 +89,4 @@ public class Test : MonoBehaviourPunCallbacks
             SwitchState(currentState.GetState());
         }
     }
-
-    void OnGUI()
-    {
-        windowRect = GUI.Window(0, windowRect, WindowFun, "Log");
-    }
-
-    void WindowFun(int windowId)
-    {
-        int count = 0;
-        foreach(string str in allLogs)
-        {
-            GUI.Label(new Rect(20, (20 * count) + 20, 120, 20), str);
-            count++;
-        }
-    }
 }
