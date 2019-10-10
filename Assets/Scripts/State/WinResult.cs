@@ -47,13 +47,13 @@ public class WinResult : AbstractRoomState
         else
         {
             txt.text = lost;
-            Manager.GetInstance().Anim.ColorChangeForLoserAnim(txt);
         }  
     }
 
     public override void Uninit()
     {
         base.Uninit();
+        txt.text = "";
         if (seq != null)
         {
             seq.Kill();
@@ -69,11 +69,13 @@ public class WinResult : AbstractRoomState
             yield return new WaitForSeconds(1);
         }
 
+        --Manager.GetInstance().roundLeft;
+        Debug.Log(Manager.GetInstance().roundLeft);
         if (Manager.GetInstance().roundLeft > 0)
             Manager.GetInstance().StartAgain();
         else
         {
-            Manager.GetInstance().stateHolder.AddString("======");
+            Manager.GetInstance().stateHolder.AddString(Manager.GetInstance().roundLeft.ToString());
             Manager.GetInstance().stateHolder.SwitchState(finalResult);
         }
     }

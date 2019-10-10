@@ -159,7 +159,6 @@ public class Manager : MonoBehaviour , IOnEventCallback
             }
 
             stateHolder.SwitchState(announce);
-            roundLeft--;
         }
 
         if (eventCode == ConstEvents.SENT)

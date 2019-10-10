@@ -21,7 +21,7 @@ public class EndResult : AbstractRoomState
     public override void Init()
     {
         base.Init();
-        foreach(Player plyr in PhotonNetwork.CurrentRoom.Players.Values)
+        foreach(Player plyr in PhotonNetwork.CurrentRoom.Players.Values.OrderByDescending(x => x.CustomProperties["Score"]))
         {
             RoomUnit ru = Instantiate(prefab, trsf);
             ru.SetText(plyr.NickName + " : " + plyr.CustomProperties["Score"]);
