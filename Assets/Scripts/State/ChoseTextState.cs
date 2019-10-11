@@ -43,7 +43,7 @@ public class ChoseTextState : AbstractRoomState
     public void Sent()
     {
         btn.interactable = false;
-        txt.text = "Sent ! waiting for others players";
+        txt.text = "Sent! Waiting for other players";
     }
 
     public override void NumberPlayersChanged()
