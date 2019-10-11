@@ -67,7 +67,7 @@ public class Result : AbstractRoomState
         foreach(RoomUnit room in units)
         {
             if (room.GetText() == str)
-                room.GetComponent<Text>().color = Color.magenta;
+                room.GetComponent<Text>().color = Color.yellow;
         }
     }
 
