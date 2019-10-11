@@ -43,6 +43,6 @@ public class EndResult : AbstractRoomState
     IEnumerator Restart()
     {
         yield return new WaitForSeconds(10);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Manager.GetInstance().stateHolder.NextState();
     }
 }
