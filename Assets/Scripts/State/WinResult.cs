@@ -40,7 +40,7 @@ public class WinResult : AbstractRoomState
 
         if (Manager.GetInstance().wasRight)
         {
-            Manager.GetInstance().Point++;
+			Manager.GetInstance().Point += 50;
             txt.text = won;
             seq = Manager.GetInstance().Anim.ColorChangeForWinnerAnim(txt, Color.green, Color.white);
         }

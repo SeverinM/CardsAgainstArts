@@ -113,7 +113,7 @@ public class Manager : MonoBehaviour , IOnEventCallback
     public void Send(InputField iF)
     {
         byte evCode = ConstEvents.SENT;
-        object content = new object[] { iF.text , PhotonNetwork.LocalPlayer.UserId};
+        object content = new object[] { " - " + iF.text , PhotonNetwork.LocalPlayer.UserId};
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         SendOptions sendOptions = new SendOptions { Reliability = true };
         PhotonNetwork.RaiseEvent(evCode, content, raiseEventOptions, sendOptions);

@@ -239,7 +239,7 @@ MonoBehaviour:
   nextState: {fileID: 1677909774}
   txt: {fileID: 195807271}
   time: 3
-  youDecide: You chose !
+  youDecide: You choose !
   youDontDecide: You write !
   disconnect: {fileID: 24242615}
 --- !u!1 &40694234
